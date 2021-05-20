@@ -18,6 +18,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+	<title>@yield('title') | laravel-boolpress</title>
 </head>
 <body>
     <div id="app">

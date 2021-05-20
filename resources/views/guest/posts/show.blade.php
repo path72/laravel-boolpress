@@ -4,11 +4,12 @@
 	use App\Post;
 @endphp
 
+@section('title','Post')
 @section('content')
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
-				<h1>{{$post->title}}</h1>
+				<h3>{{$post->title}}</h3>
 				<p>Autore: <strong>{{$post->user->name}} ({{$post->user->email}})</strong></p>
 				{{-- <p>{{$post->content}}</p> --}}
 				<div class="post_content">
@@ -20,9 +21,7 @@
 				<div class="post_more_from">
 					<p>Altri post di <strong>{{$post->user->name}}:</strong></p>
 					@php
-						// $this_user_posts = Post::where('user_id',$post->user_id)->where('id','!=',$post['id']); // non funziona!
-						$posts = Post::all();
-						$this_user_posts = $posts->where('user_id',$post->user_id)->where('id','!=',$post['id']);
+						$this_user_posts = Post::where('user_id',$post->user_id)->where('id','!=',$post['id'])->get(); // non funziona!
 					@endphp
 					<ul>
 						@foreach ($this_user_posts as $this_user_post)
