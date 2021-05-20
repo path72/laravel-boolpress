@@ -17,14 +17,25 @@ use Illuminate\Support\Facades\Auth;
 // ! HERE [1] !
 
 // % GUEST ROUTES % 
+
 Route::get('/', 'HomeController@index')->name('guest-home');
 
-// Auth::routes();
-Auth::routes(['register'=>false]); // no register in guest home 
+// # MODE 1: singole rotte con parametro {slug} # 
+// Route::get('/posts', 'PostController@index')->name('posts.index');
+// Route::get('/posts/{slug}', 'PostController@show')->name('posts.show');
+// # MODE 2: raggruppamento con prefix # 
+Route::prefix('posts')
+	->group(function() {
+		Route::get('/', 'PostController@index')->name('posts.index');
+		Route::get('/{slug}', 'PostController@show')->name('posts.show');		
+	});
+
+Auth::routes(); // signup presente in guest home
+// Auth::routes(['register'=>false]); // disattivazione signup in guest home 
 
 // % ADMIN ROUTES % 
 // Route::get('/admin', 'HomeController@index')->name('admin-home')->middleware('auth');
-// oppure raggruppamento sorro prefisso URI 'admin'
+// oppure raggruppamento sotto prefisso URI 'admin'
 Route::prefix('admin')   	// prefisso URI raggruppamento sezione /admin/...
 	->namespace('Admin')	// ubicazione Controller admin /app/Http/Controllers/Admin/
 	->middleware('auth')	// controllore autenticazione

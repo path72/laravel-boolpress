@@ -10,6 +10,18 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+	/**
+	 * ! User<1N>Post !
+	 * 
+	 * 1 User ha molti Post
+	 * >>> posts() plurale
+	 */
+	public function posts()
+	{
+		return $this->hasMany('App\Post');
+	}
+
+
     /**
      * The attributes that are mass assignable.
      *
