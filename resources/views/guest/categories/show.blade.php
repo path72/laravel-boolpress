@@ -26,7 +26,8 @@
 							@foreach ($this_category_posts as $this_category_post)
 								<li>
 									<a href="{{route('posts.show',['slug'=>$this_category_post['slug']])}}">{{$this_category_post->title}}</a>
-									Autore: {{$this_category_post->user->name}}
+									Autore: <a href="{{route('users.show',['id'=>$this_category_post->user->id])}}">{{$this_category_post->user->name}}</a>
+									
 								</li>
 							@endforeach
 						</ul>						

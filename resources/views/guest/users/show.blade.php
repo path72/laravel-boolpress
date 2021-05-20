@@ -4,26 +4,19 @@
 	use App\Post;
 @endphp
 
-@section('title','Post')
+@section('title','User')
 @section('content')
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
-				<h3>Post: {{$post->title}}</h3>
-				<p>Autore: <strong><a href="{{route('users.show',['id'=>$post->user->id])}}">{{$post->user->name}}</a></strong> ({{$post->user->email}})</p>
-				{{-- <p>{{$post->content}}</p> --}}
-				<div class="post_content">
-					@php $pars = preg_split("/\r\n|\n|\r/", $post['content']); @endphp
-					@foreach ($pars as $par)			
-						<p>{{$par}}</p>
-					@endforeach
-				</div>
+				<h3>Utente: {{$user->name}}</h3>
+				<p>{{$user->email}}</p>
 				<div class="post_more_from">
 					@php
-						$this_user_posts = Post::where('user_id',$post->user_id)->where('id','!=',$post['id'])->get();
+						$this_user_posts = Post::where('user_id',$user->id)->get();
 					@endphp
 					@if ($this_user_posts->toArray())
-						<p>Altri post di <strong><a href="{{route('users.show',['id'=>$post->user->id])}}">{{$post->user->name}}</a></strong>:</p>
+						<p>Post di <strong>{{$user->name}}</strong>:</p>
 						<ul>
 							@foreach ($this_user_posts as $this_user_post)
 								<li>

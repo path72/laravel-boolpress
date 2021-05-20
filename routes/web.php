@@ -25,16 +25,23 @@ Route::get('/', 'HomeController@index')->name('guest-home');
 // Route::get('/posts/{slug}', 'PostController@show')->name('posts.show');
 // Route::get('/categories', 'CategoryController@index')->name('categories.index');
 // Route::get('/categories/{slug}', 'CategoryController@show')->name('categories.show');
+// Route::get('/users', 'UserController@index')->name('users.index');
+// Route::get('/users/{id}', 'UserController@show')->name('users.show');
 // # MODE 2: raggruppamento con prefix # 
 Route::prefix('posts')
 	->group(function() {
 		Route::get('/', 'PostController@index')->name('posts.index');
 		Route::get('/{slug}', 'PostController@show')->name('posts.show');		
 	});
-	Route::prefix('categories')
+Route::prefix('categories')
 	->group(function() {
 		Route::get('/', 'CategoryController@index')->name('categories.index');
 		Route::get('/{slug}', 'CategoryController@show')->name('categories.show');		
+	});
+Route::prefix('users')
+	->group(function() {
+		Route::get('/', 'UserController@index')->name('users.index');
+		Route::get('/{id}', 'UserController@show')->name('users.show');		
 	});
 
 Auth::routes(); // signup presente in guest home
