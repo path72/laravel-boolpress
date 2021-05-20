@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {	
-    /**
+	protected $fillable = ['title','content','slug','user_id'];
+
+	/**
 	 * ! Post<N1>User !
 	 * 
 	 * 1 Post appartiene a 1 User
@@ -16,12 +18,5 @@ class Post extends Model
 	{
 		return $this->belongsTo('App\User');
 	}
-
-	protected $fillable = [
-		'title',
-		'content',
-		'slug',
-		'user_id'
-	];
 
 }
