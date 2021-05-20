@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\Route;
 // % GUEST ROUTES % 
 Route::get('/', 'HomeController@index')->name('guest-home');
 
-Auth::routes();
+// Auth::routes();
+Auth::routes(['register'=>false]); // no register in guest home 
 
 // % ADMIN ROUTES % 
 // Route::get('/admin', 'HomeController@index')->name('admin-home')->middleware('auth');
