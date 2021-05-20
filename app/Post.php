@@ -19,4 +19,14 @@ class Post extends Model
 		return $this->belongsTo('App\User');
 	}
 
+	/**
+	 * ! Post<N1>Category !
+	 * 
+	 * 1 Post appartiene a 1 User
+	 * >>> user() singolare
+	 */
+	public function category()
+	{
+		return $this->belongsTo('App\Category');
+	}
 }

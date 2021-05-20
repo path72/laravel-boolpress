@@ -9,7 +9,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
-				<h3>{{$post->title}}</h3>
+				<h3>Post: {{$post->title}}</h3>
 				<p>Autore: <strong>{{$post->user->name}} ({{$post->user->email}})</strong></p>
 				{{-- <p>{{$post->content}}</p> --}}
 				<div class="post_content">
@@ -19,15 +19,20 @@
 					@endforeach
 				</div>
 				<div class="post_more_from">
-					<p>Altri post di <strong>{{$post->user->name}}:</strong></p>
 					@php
-						$this_user_posts = Post::where('user_id',$post->user_id)->where('id','!=',$post['id'])->get(); // non funziona!
+						$this_user_posts = Post::where('user_id',$post->user_id)->where('id','!=',$post['id'])->get();
 					@endphp
-					<ul>
-						@foreach ($this_user_posts as $this_user_post)
-							<li><a href="{{route('posts.show',['slug'=>$this_user_post['slug']])}}">{{$this_user_post->title}}</a></li>
-						@endforeach
-					</ul>
+					@if ($this_user_posts->toArray())
+						<p>Altri post di <strong>{{$post->user->name}}</strong>:</p>
+						<ul>
+							@foreach ($this_user_posts as $this_user_post)
+								<li>
+									<a href="{{route('posts.show',['slug'=>$this_user_post['slug']])}}">{{$this_user_post->title}}</a>
+									Categoria: <a href="{{route('categories.show',['slug'=>$this_user_post->category->slug])}}">{{$this_user_post->category->name}}</a>
+								</li>
+							@endforeach
+						</ul>
+					@endif
 				</div>
 			</div>
 		</div>
