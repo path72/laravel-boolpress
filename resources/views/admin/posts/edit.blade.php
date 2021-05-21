@@ -1,7 +1,12 @@
 @extends('layouts.dashboard')
 
+{{-- IL POST SPECIFICO --}}
 {{-- @dd($post) --}}
+{{-- TUTTI I TAG DEL DB --}}
 {{-- @dd($tags) --}}
+{{-- I TAG DEL POST SPECIFICO - Collection & BelongsToMany --}}
+{{-- @dd($post->tags) --}}
+{{-- @dd($post->tags()) --}}
 
 @section('content')
 <div class="container">
@@ -46,12 +51,13 @@
 
                 <div class="form-group">
                     <p>Seleziona i tag:</p>
-                    @foreach ($tags as $tag)
+                    @foreach ($tags as $tag) 
                         <div class="form-check @error('tags') is-invalid @enderror">
                             {{-- 
-								$tag è ogni tag dell'elenco dei possibili
+								$tag è ogni tag dell'elenco di tutti i tag del DB
 								$post->tags: sono i tag associati al $post
 								name = 'tags' è l'array che raccoglie i valori di value = $tag->id
+								qui uso $post->tags e non $post->tags() (classi diverse >> metodi diversi)
 							--}}
                             <input name="tags[]" class="form-check-input" type="checkbox" value="{{ $tag->id }}"
                             {{ $post->tags->contains($tag) ? 'checked=checked' : '' }}>

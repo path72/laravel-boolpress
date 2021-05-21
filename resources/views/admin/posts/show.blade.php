@@ -1,5 +1,6 @@
 @extends('layouts.dashboard')
 
+{{-- IL POST SPECIFICO --}}
 {{-- @dd($post) --}}
 
 @section('content')

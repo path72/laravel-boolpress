@@ -113,7 +113,11 @@ class PostController extends Controller
 		// ! devo aggiornare la pivot !
 		// se l'array dei tag selezionati non è vuoto
 		// @dd($request->tags); // array dei tag selezionati nel form edit
-		// @dd($post->tags()); 	// relazione post-tag (i tag di questo post)
+
+		// occhio alle parentesi! (classi diverse >> metodi diversi)
+		// @dump($post->tags()); 	// BelongsToMany >> relazione post-tag (i tag di questo post)
+		// @dd($post->tags); 		// Collection >> array arricchito (i tag di questo post)
+
 		if($request->tags) {
 			$post->tags()->sync($request->tags);
 		} else {
@@ -126,6 +130,10 @@ class PostController extends Controller
     }
 
     /**
+	 * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	 * %            DESTROY            %
+	 * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	 * 
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -133,7 +141,18 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+		// il post specifico in base all'id che mi hanno passato
+		$post = Post::find($id);
+		
+		// cancellare le relazioni post(id)-tag presenti nella pivot
+		$post->tags()->sync([]);
+
+        // cancellare il post $id
+		$post->delete();
+
+		// alla fine torno all'index 
+		@dump('');
+		return redirect()->route('admin.posts.index')->with('status','Post cancellato correttamente');		
     }
 
 
