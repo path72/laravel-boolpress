@@ -54,14 +54,17 @@
                     @foreach ($tags as $tag) 
                         <div class="form-check @error('tags') is-invalid @enderror">
                             {{-- 
-								$tag è ogni tag dell'elenco di tutti i tag del DB
-								$post->tags: sono i tag associati al $post
-								name = 'tags' è l'array che raccoglie i valori di value = $tag->id
+								$tags       : Collection di Model Tag >> tutti i tag del DB
+								$post->tags : Collection di Model Tag >> tag associati al $post
+								$tag        : Model Tag >> ogni tag del DB
 								qui uso $post->tags e non $post->tags() (classi diverse >> metodi diversi)
-							--}}
+								name = 'tags' è l'array che raccoglie i valori di value = $tag->id
+							--}}	
+							{{-- {{'$tags'}} @dump($tags) --}}
+							{{-- {{'$post->tags'}} @dump($post->tags) --}}
+							{{-- {{'$tag'}} @dd($tag) --}}
                             <input name="tags[]" class="form-check-input" type="checkbox" value="{{ $tag->id }}"
                             {{ $post->tags->contains($tag) ? 'checked=checked' : '' }}>
-                            
                             <label class="form-check-label">
                                 {{ $tag->name }}
                             </label>
