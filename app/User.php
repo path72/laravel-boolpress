@@ -13,7 +13,7 @@ class User extends Authenticatable
 	/**
 	 * ! User<1N>Post !
 	 * 
-	 * 1 User ha molti Post
+	 * Ogni User ha molti Post
 	 * >>> posts() plurale
 	 */
 	public function posts()

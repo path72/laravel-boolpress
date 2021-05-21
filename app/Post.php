@@ -11,7 +11,7 @@ class Post extends Model
 	/**
 	 * ! Post<N1>User !
 	 * 
-	 * 1 Post appartiene a 1 User
+	 * Ogni Post appartiene a 1 User
 	 * >>> user() singolare
 	 */
 	public function user()
@@ -22,8 +22,8 @@ class Post extends Model
 	/**
 	 * ! Post<N1>Category !
 	 * 
-	 * 1 Post appartiene a 1 User
-	 * >>> user() singolare
+	 * Ogni Post appartiene a 1 Category
+	 * >>> category() singolare
 	 */
 	public function category()
 	{

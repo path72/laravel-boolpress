@@ -11,8 +11,8 @@ class Category extends Model
 	/**
 	 * ! Category<1N>Post !
 	 * 
-	 * 1 Category ha molti Post
-	 * >>> user() singolare
+	 * Ogni Category ha molti Post
+	 * >>> posts() plurale
 	 */
 	public function posts()
 	{
