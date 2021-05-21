@@ -29,4 +29,19 @@ class Post extends Model
 	{
 		return $this->belongsTo('App\Category');
 	}
+
+	/**
+	 * ! Post<NM>Tag !
+	 * 
+	 * Ogni Post appartiene a molti Tag
+	 * >>> tags() plurale
+	 */
+	public function tags()
+	{
+		/**
+		 * se la pivot table si chiamasse tag_post
+		 * return $this->belongsToMany('App\Tag');
+		 */ 
+		return $this->belongsToMany('App\Tag', 'tags_posts');
+	}
 }

@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\Auth;
 
 // % GUEST ROUTES % 
 
-Route::get('/', 'HomeController@index')->name('guest-home');
+Route::get('/', 'HomeController@index')->name('guest-homepage');
 
-// # MODE 1: singole rotte con parametro {slug} # 
+// # MODE 1: singole rotte, eventualmente con parametro {} # 
 // Route::get('/posts', 'PostController@index')->name('posts.index');
 // Route::get('/posts/{slug}', 'PostController@show')->name('posts.show');
 // Route::get('/categories', 'CategoryController@index')->name('categories.index');
@@ -38,6 +38,11 @@ Route::prefix('categories')
 		Route::get('/', 'CategoryController@index')->name('categories.index');
 		Route::get('/{slug}', 'CategoryController@show')->name('categories.show');		
 	});
+Route::prefix('tags')
+	->group(function() {
+		Route::get('/', 'TagController@index')->name('tags.index');
+		Route::get('/{slug}', 'TagController@show')->name('tags.show');		
+	});
 Route::prefix('users')
 	->group(function() {
 		Route::get('/', 'UserController@index')->name('users.index');
@@ -48,6 +53,7 @@ Auth::routes(); // signup presente in guest home
 // Auth::routes(['register'=>false]); // disattivazione signup in guest home 
 
 // % ADMIN ROUTES % 
+
 // Route::get('/admin', 'HomeController@index')->name('admin-home')->middleware('auth');
 // oppure raggruppamento sotto prefisso URI 'admin'
 Route::prefix('admin')   	// prefisso URI raggruppamento sezione /admin/...
@@ -61,7 +67,7 @@ Route::prefix('admin')   	// prefisso URI raggruppamento sezione /admin/...
 			'create' 	=> 'admin.posts.create',
 			'store' 	=> 'admin.posts.store',
 			'edit' 		=> 'admin.posts.edit',
-			'update' 	=> 'admin.posts.apdate',
+			'update' 	=> 'admin.posts.update',
 			'destroy' 	=> 'admin.posts.destroy',
 		]);
 	});

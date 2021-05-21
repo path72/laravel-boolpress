@@ -11,6 +11,14 @@
 			<div class="col-12">
 				<h3>Post: {{$post->title}}</h3>
 				<p>Autore: <strong><a href="{{route('users.show',['id'=>$post->user->id])}}">{{$post->user->name}}</a></strong> ({{$post->user->email}})</p>
+				<p>
+					Categoria: 
+					@if($post->category)
+						<a href="{{route('categories.show',['slug'=>$post->category->slug])}}">{{$post->category->name}}</a>
+					@else
+						-	
+					@endif
+				</p>
 				{{-- <p>{{$post->content}}</p> --}}
 				<div class="post_content">
 					@php $pars = preg_split("/\r\n|\n|\r/", $post['content']); @endphp

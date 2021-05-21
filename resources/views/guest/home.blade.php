@@ -81,13 +81,18 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Laravel Boolpress
                 </div>
 
                 <div class="links">
                     <a href="{{route('users.index')}}">Users</a>
-                    <a href="{{route('posts.index')}}">Posts</a>
+					@auth
+						<a href="{{route('admin.posts.index')}}">Posts</a>
+					@else
+						<a href="{{route('posts.index')}}">Posts</a>
+					@endauth
                     <a href="{{route('categories.index')}}">Categories</a>
+                    <a href="{{route('tags.index')}}">Tags</a>
                 </div>
             </div>
         </div>
