@@ -70,5 +70,14 @@ Route::prefix('admin')   	// prefisso URI raggruppamento sezione /admin/...
 			'update' 	=> 'admin.posts.update',
 			'destroy' 	=> 'admin.posts.destroy',
 		]);
+		Route::resource('/posts', CategoryController::class)->names([
+			'index' 	=> 'admin.categories.index',
+			'show' 		=> 'admin.categories.show',
+			'create' 	=> 'admin.categories.create',
+			'store' 	=> 'admin.categories.store',
+			'edit' 		=> 'admin.categories.edit',
+			'update' 	=> 'admin.categories.update',
+			'destroy' 	=> 'admin.categories.destroy',
+		]);
 	});
 

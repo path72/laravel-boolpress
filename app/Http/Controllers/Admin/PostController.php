@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Post;
 use App\Tag;
+use App\Category;
 
 class PostController extends Controller
 {
@@ -38,7 +39,8 @@ class PostController extends Controller
     public function create()
     {
 		$data = [
-			'tags' => Tag::all()
+			'tags' => Tag::all(),
+			'categories' => Category::all()
 		];
         return view('admin.posts.create',$data);
     }
@@ -70,14 +72,22 @@ class PostController extends Controller
 		// id user che crea il post
 		$new_post['user_id'] = Auth::id();
 
-		// il nuovo post acquisisce i dati del form e finisce nel DB
-		// ! aggiornamento post tabella posts, tranne i tag !		
+		// ! aggiunto $new_post nella table posts; NON sono qui i tag !
+		// il nuovo post acquisisce i dati del form e viene buttato nel DB
 		$data = $request->all();
 		$new_post->fill($data);
 		$new_post->save(); // ! DB writing here !
 
+		// ! NON ho aggiunto i tag che non stanno nella table posts, ma nella pivot!
+		// se l'array dei tag selezionati non è vuoto
+		// echo '$request->tags'; @dump($request->tags);	// array dei tag selezionati nel form create
+		// echo '$post->tags()'; @dump($post->tags()); 		// BelongsToMany >> relazione post-tag >> tag associati al $post
+		// echo '$post->tags'; @dd($post->tags);			// Collection di Model Tag >> tag associati al $post
+		// occhio alle parentesi! (classi diverse >> metodi diversi)
+		// qui uso $post->tags() e non $post->tags 
+
 		// solo con il post nel DB ho l'id del post per associare i tag
-		// ! devo aggiornare la pivot associata a QUESTO post in DB!
+		// devo aggiornare la pivot associata a QUESTO post in DB!
 		if($request->tags) {
 			$new_post->tags()->sync($request->tags); // ! DB writing here !
 		} else {
@@ -122,13 +132,15 @@ class PostController extends Controller
 		// il post specifico
 		$post = Post::find($id);
 
-		// mi porto dentro tutti i tag
+		// mi porto dentro tutti i tag e le categorie
 		// poi vedrò quale associare al post $id
 		$tags = Tag::all();
+		$categories = Category::all();
 
 		$data = [
 			'post' => $post,
-			'tags' => $tags
+			'tags' => $tags,
+			'categories' => $categories
 		];
         return view('admin.posts.edit',$data);
     }
@@ -146,13 +158,13 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        // $request è il contenuto del form (post+tag)
+        // $request è il contenuto del form (post con category + tag array)
 		// @dd($request);
 
 		// validazione parte post
 		$this->postValidation($request);
 
-		// $post è il post passato dall'edit()
+		// $post è il post passato dall'edit(), quello presente in DB da modificare
 		// @dd($post);
 
 		// se titolo cambiato >> rigenerazione slug
@@ -163,20 +175,21 @@ class PostController extends Controller
 		// ! gestire lo user che modifica il post !
 		//
 
-		// il post specifico acquisisce i dati del form e aggiorna quelli già presenti nel DB
-		// ! aggiornamento post tabella posts, tranne i tag !
+		// ? gestire updated_at ?
+		//
+
+		// ! aggiornamento $post nella table posts; NON sono qui i tags !
+		// il post specifico acquisisce i dati del form (inclusa category) e aggiorna quelli già presenti nel DB
 		$data = $request->all();
 		$post->update($data); // ! DB writing here !
 
-		// è cambiato qualcosa per i tag?
-		// quali tag possiede il post non è info che sta nella tabella posts, ma nella pivot!
-		// ! devo aggiornare la pivot !
+		// ! NON ho aggiornato i tag che non stanno nella table posts, ma nella pivot!
 		// se l'array dei tag selezionati non è vuoto
-		// @dd($request->tags); // array dei tag selezionati nel form edit
+		// echo '$request->tags'; @dump($request->tags);	// array dei tag selezionati nel form edit
+		// echo '$post->tags()'; @dump($post->tags()); 		// BelongsToMany >> relazione post-tag >> tag associati al $post
+		// echo '$post->tags'; @dd($post->tags);			// Collection di Model Tag >> tag associati al $post
 		// occhio alle parentesi! (classi diverse >> metodi diversi)
-		// echo '$post->tags()'; @dump($post->tags()); 	// BelongsToMany >> relazione post-tag >> tag associati al $post
-		// echo '$post->tags'; @dd($post->tags); 		// Collection di Model Tag >> tag associati al $post
-		// qui uso $post->tags() e non $post->tags (classi diverse >> metodi diversi)
+		// qui uso $post->tags() e non $post->tags 
 		if($request->tags) {
 			$post->tags()->sync($request->tags); // ! DB writing here !
 		} else {
