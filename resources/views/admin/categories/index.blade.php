@@ -1,17 +1,17 @@
 @extends('layouts.dashboard')
 
-{{-- TUTTI I POST DEL DB --}}
-{{-- @dd($posts) --}}
+{{-- TUTTE LE CATEGORIE DEL DB --}}
+{{-- @dd($categories) --}}
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
-                <h1>Tutti i posts</h1>
+                <h1>Tutte le categorie</h1>
 				@auth
-					<a href="{{ route('admin.posts.create') }}" class="btn btn-primary">
-						Crea nuovo post
+					<a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
+						Crea nuova categoria
 					</a>
 				@else
 				@endauth
@@ -28,29 +28,29 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Titolo</th>
+                        <th>Nome</th>
                         <th>Slug</th>
                         <th class="text-center">Azioni</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($posts as $post)
+                    @foreach ($categories as $category)
                         <tr>
-                            <td>{{ $post->id }}</td>
-                            <td>{{ $post->title }}</td>
-                            <td>{{ $post->slug }}</td>
+                            <td>{{ $category->id }}</td>
+                            <td>{{ $category->name }}</td>
+                            <td>{{ $category->slug }}</td>
                             <td>
 								{{-- SHOW --}}
-								<a class="btn btn-info btn-sm" href="{{ route('admin.posts.show',$post->id) }}">
+								<a class="btn btn-info btn-sm" href="{{ route('admin.categories.show',$category->id) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                                 </a>
 								@auth
 									{{-- EDIT --}}
-									<a class="btn btn-warning btn-sm" href="{{ route('admin.posts.edit',$post->id) }}">
+									<a class="btn btn-warning btn-sm" href="{{ route('admin.categories.edit',$category->id) }}">
 										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon><line x1="3" y1="22" x2="21" y2="22"></line></svg>
 									</a>
 									{{-- DELETE --}}
-									<form class="d-inline-block" action="{{ route('admin.posts.destroy',$post->id) }}" method="post">
+									<form class="d-inline-block" action="{{ route('admin.categories.destroy',$category->id) }}" method="post">
 										@csrf
 										@method('DELETE')
 										<button type="submit" class="btn btn-danger btn-sm">

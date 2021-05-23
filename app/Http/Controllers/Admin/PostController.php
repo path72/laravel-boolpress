@@ -72,7 +72,7 @@ class PostController extends Controller
 		// id user che crea il post
 		$new_post['user_id'] = Auth::id();
 
-		// ! aggiunto $new_post nella table posts; NON sono qui i tag !
+		// ! aggiungo $new_post nella table posts; NON sono qui i tag !
 		// il nuovo post acquisisce i dati del form e viene buttato nel DB
 		$data = $request->all();
 		$new_post->fill($data);
@@ -161,11 +161,11 @@ class PostController extends Controller
         // $request è il contenuto del form (post con category + tag array)
 		// @dd($request);
 
-		// validazione parte post
-		$this->postValidation($request);
-
 		// $post è il post passato dall'edit(), quello presente in DB da modificare
 		// @dd($post);
+
+		// validazione parte post
+		$this->postValidation($request);
 
 		// se titolo cambiato >> rigenerazione slug
 		if($request->title != $post->title) {

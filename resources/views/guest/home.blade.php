@@ -88,11 +88,12 @@
                     <a href="{{route('users.index')}}">Users</a>
 					@auth
 						<a href="{{route('admin.posts.index')}}">Posts</a>
+						<a href="{{route('admin.categories.index')}}">Categories</a>
 					@else
 						<a href="{{route('posts.index')}}">Posts</a>
+						<a href="{{route('categories.index')}}">Categories</a>
 					@endauth
-                    <a href="{{route('categories.index')}}">Categories</a>
-                    <a href="{{route('tags.index')}}">Tags</a>
+					<a href="{{route('tags.index')}}">Tags</a>
                 </div>
             </div>
         </div>
