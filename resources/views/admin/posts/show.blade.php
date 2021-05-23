@@ -40,7 +40,7 @@
                 <dt>Tag</dt>
                 <dd>
                     @forelse ($post->tags as $tag)
-                        {{ $tag->name }}{{ !$loop->last ? ',' : '' }}
+						<a href="{{route('admin.tags.show',$tag->id)}}">{{$tag->name}}</a>{{ !$loop->last ? ',' : '' }}
                     @empty
                         -
                     @endforelse

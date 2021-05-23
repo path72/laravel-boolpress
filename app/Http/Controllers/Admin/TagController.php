@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Category;
+use App\Tag;
 
-class CategoryController extends Controller
+class TagController extends Controller
 {
     /**
 	 * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -19,10 +19,10 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-	{
-		$categories = Category::all();
-		return view('admin.categories.index',compact('categories'));
-	}
+    {
+		$tags = Tag::all();
+		return view('admin.tags.index',compact('tags'));
+    }
 
     /**
 	 * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -35,7 +35,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        return view('admin.tags.create');
     }
 
     /**
@@ -50,27 +50,27 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-		// $request è il contenuto del form (categoria)
+		// $request è il contenuto del form (tag)
 		// @dd($request);
 
 		// validazione category
-		$this->categoryValidation($request);
+		$this->tagValidation($request);
 
-		// $new_category è la nuova categoria da mettere in DB 
-		$new_category = new Category;
+		// $new_tag è il nuovo tag da mettere in DB 
+		$new_tag = new Tag;
 
 		// generazione slug dal nome
-		$new_category['slug'] = $this->slugGeneration($request->name);
+		$new_tag['slug'] = $this->slugGeneration($request->name);
 
-		// ! aggiungo $new_category nella table categories !
-		// la nuova categoria acquisisce i dati del form e viene buttato nel DB
+		// ! aggiungo $new_tag nella table tags !
+		// il nuovo tag acquisisce i dati del form e viene buttato nel DB
 		$data = $request->all();
-		$new_category->fill($data);
-		$new_category->save(); // ! DB writing here !
+		$new_tag->fill($data);
+		$new_tag->save(); // ! DB writing here !
 
 		// alla fine torno all'index 
 		@dump('');
-		return redirect()->route('admin.categories.index')->with('status','Categoria creata correttamente');		
+		return redirect()->route('admin.tags.index')->with('status','Tag creato correttamente');		
     }
 
     /**
@@ -86,10 +86,11 @@ class CategoryController extends Controller
     public function show($id)
     {
 		$data = [
-			'category' => Category::find($id)
+			'tag' => Tag::find($id)
  		];
-        return view('admin.categories.show',$data);
-   }
+        return view('admin.tags.show',$data);
+        //
+    }
 
     /**
 	 * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -103,13 +104,13 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-		// la categoria specifica
-		$category = Category::find($id);
+		// il tag specifico
+		$tag = Tag::find($id);
 
 		$data = [
-			'category' => $category,
+			'tag' => $tag,
 		];
-        return view('admin.categories.edit',$data);
+        return view('admin.tags.edit',$data);
     }
 
     /**
@@ -123,30 +124,30 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Tag $tag)
     {
-        // $request è il contenuto del form (category)
+        // $request è il contenuto del form (tag)
 		// @dd($request);
 
-		// $category è la categoria passata dall'edit(), quella presente in DB da modificare
-		// @dd($category);
+		// $tag è il tag passato dall'edit(), quello presente in DB da modificare
+		// @dd($tag);
 
 		// validazione categoria
-		$this->categoryValidation($request);
+		$this->tagValidation($request);
 
 		// se titolo cambiato >> rigenerazione slug
-		if($request->name != $category->name) {
-			$category['slug'] = $this->slugGeneration($request->name);
+		if($request->name != $tag->name) {
+			$tag['slug'] = $this->slugGeneration($request->name);
 		}
 
-		// ! aggiornamento $category nella table categories !
-		// la category specifica acquisisce i dati del form e aggiorna quelli già presenti nel DB
+		// ! aggiornamento $tag nella table tags !
+		// il tag specifico acquisisce i dati del form e aggiorna quelli già presenti nel DB
 		$data = $request->all();
-		$category->update($data); // ! DB writing here !		
+		$tag->update($data); // ! DB writing here !		
 
 		// alla fine torno all'index 
 		@dump('');
-		return redirect()->route('admin.categories.index')->with('status','Categoria modificata correttamente');		
+		return redirect()->route('admin.tags.index')->with('status','Tag modificato correttamente');		
     }
 
     /**
@@ -161,15 +162,15 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-		// la categoria specifica in base all'id che mi hanno passato
-		$category = Category::find($id);
+		// il tag specifico in base all'id che mi hanno passato
+		$tag = Tag::find($id);
 	
-        // cancellare la categoria $id
-		$category->delete();
+        // cancellare il tag $id
+		$tag->delete();
 
 		// alla fine torno all'index 
 		@dump('');
-		return redirect()->route('admin.categories.index')->with('status','Categoria eliminata correttamente');		
+		return redirect()->route('admin.tags.index')->with('status','Tag eliminato correttamente');		
     }
 
 
@@ -177,16 +178,14 @@ class CategoryController extends Controller
 
 
 
-
-
 	/**
-	 * Category: form data validation
+	 * Tag: form data validation
 	 * https://laravel.com/docs/7.x/validation
 	 * errors shown in EDIT/CREATE view
 	 * 
 	 * @param  \Illuminate\Http\Request  $req
 	 */
-	protected function categoryValidation($req) {
+	protected function tagValidation($req) {
 		$req->validate([
 			'name'			=> 'required|max:255',
 			'description'	=> 'required'
@@ -203,12 +202,12 @@ class CategoryController extends Controller
 	protected function slugGeneration($slug_source) {
 		$slug = Str::slug($slug_source,'-');
 		$slug_tmp = $slug;
-		$slug_is_present = Category::where('slug',$slug)->first();
+		$slug_is_present = Tag::where('slug',$slug)->first();
 		$counter = 1;
 		while ($slug_is_present) {
 			$slug = $slug_tmp.'-'.$counter;
 			$counter++;
-			$slug_is_present = Category::where('slug',$slug)->first();
+			$slug_is_present = Tag::where('slug',$slug)->first();
 		}
 		return $slug;
 	}

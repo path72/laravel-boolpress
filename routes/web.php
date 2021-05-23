@@ -79,5 +79,14 @@ Route::prefix('admin')   	// prefisso URI raggruppamento sezione /admin/...
 			'update' 	=> 'admin.categories.update',
 			'destroy' 	=> 'admin.categories.destroy',
 		]);
+		Route::resource('/tags', TagController::class)->names([
+			'index' 	=> 'admin.tags.index',
+			'show' 		=> 'admin.tags.show',
+			'create' 	=> 'admin.tags.create',
+			'store' 	=> 'admin.tags.store',
+			'edit' 		=> 'admin.tags.edit',
+			'update' 	=> 'admin.tags.update',
+			'destroy' 	=> 'admin.tags.destroy',
+		]);
 	});
 

@@ -224,7 +224,7 @@ class PostController extends Controller
 
 		// alla fine torno all'index 
 		@dump('');
-		return redirect()->route('admin.posts.index')->with('status','Post cancellato correttamente');		
+		return redirect()->route('admin.posts.index')->with('status','Post eliminato correttamente');		
     }
 
 
