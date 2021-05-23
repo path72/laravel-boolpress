@@ -25,7 +25,18 @@
 				<dt>Post con questo tag</dt>
                 <dd>
 					@forelse ($tag->posts as $post)
-						<div><a href="{{route('admin.posts.show',$post->id)}}">{{ $post->title }}</a></div>
+						<div>
+							<a href="{{route('admin.posts.show',$post->id)}}">{{ $post->title }}</a>
+							<div style="margin-left: 20px;">
+								Autore: <a href="{{route('users.show',$post->user_id)}}">{{ $post->user->name }}</a>
+								Categoria: 
+								@if ($post['category_id'])
+									<a href="{{route('admin.categories.show',$post->category_id)}}">{{$post->category->name}}</a>								
+								@else
+									-
+								@endif
+							</div>
+						</div>
 					@empty
 						-
 					@endforelse

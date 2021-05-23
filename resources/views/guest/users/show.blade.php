@@ -19,10 +19,15 @@
 						<p>Post di <strong>{{$user->name}}</strong>:</p>
 						<ul>
 							@foreach ($this_user_posts as $this_user_post)
-								<li>
-									<a href="{{route('posts.show',['slug'=>$this_user_post['slug']])}}">{{$this_user_post->title}}</a>
-									Categoria: <a href="{{route('categories.show',['slug'=>$this_user_post->category->slug])}}">{{$this_user_post->category->name}}</a>
-								</li>
+							<li>
+								<a href="{{route('posts.show',['slug'=>$this_user_post['slug']])}}">{{$this_user_post->title}}</a>
+								Categoria: 
+								@if ($this_user_post->category)										
+									<a href="{{route('categories.show',$this_user_post->category->slug)}}">{{$this_user_post->category->name}}</a>
+								@else
+									-
+								@endif
+							</li>									
 							@endforeach
 						</ul>
 					@endif
