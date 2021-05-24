@@ -62,5 +62,8 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+		// ! qui siamo nel gestore dei middelware !
+		// ! aggiungo riferimento a un middelware custom creato da me !
+		'api_token_check' => \App\Http\Middleware\CheckApiToken::class,
     ];
 }

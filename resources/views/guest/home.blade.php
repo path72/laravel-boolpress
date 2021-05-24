@@ -90,6 +90,7 @@
 						<a href="{{route('admin.posts.index')}}">Posts</a>
 						<a href="{{route('admin.categories.index')}}">Categories</a>
 						<a href="{{route('admin.tags.index')}}">Tags</a>
+						<a href="{{route('admin-profile')}}">Profile</a>
 					@else
 						<a href="{{route('posts.index')}}">Posts</a>
 						<a href="{{route('categories.index')}}">Categories</a>

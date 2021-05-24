@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+/**
+ * ! http://localhost:8000/
+ * 
+ * URI contattabile in get/post
+ */
+
 // ! HERE [1] !
 
 // % GUEST ROUTES % 
@@ -61,6 +67,11 @@ Route::prefix('admin')   	// prefisso URI raggruppamento sezione /admin/...
 	->middleware('auth')	// controllore autenticazione
 	->group(function () {	// rotte specifiche admin
 		Route::get('/', 'HomeController@index')->name('admin-home');
+
+		// le robe del token
+		Route::get('/profile', 'HomeController@profile')->name('admin-profile');
+		Route::post('/profile/generate-token', 'HomeController@generateToken')->name('admin.generate_token');
+
 		Route::resource('/posts', PostController::class)->names([
 			'index' 	=> 'admin.posts.index',
 			'show' 		=> 'admin.posts.show',
