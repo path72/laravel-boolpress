@@ -14,18 +14,15 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-/**
- * ! http://localhost:8000/
- * 
- * URI contattabile in get/post
- */
 
 // ! HERE [1] !
 
 // % GUEST ROUTES % 
 
+/**
+ * ! http://localhost:8000/
+ */
 Route::get('/', 'HomeController@index')->name('guest-homepage');
-
 // # MODE 1: singole rotte, eventualmente con parametro {} # 
 // Route::get('/posts', 'PostController@index')->name('posts.index');
 // Route::get('/posts/{slug}', 'PostController@show')->name('posts.show');
@@ -55,23 +52,26 @@ Route::prefix('users')
 		Route::get('/{id}', 'UserController@show')->name('users.show');		
 	});
 
-Auth::routes(); // signup presente in guest home
-// Auth::routes(['register'=>false]); // disattivazione signup in guest home 
-
 // % ADMIN ROUTES % 
 
+Auth::routes(); // signup presente in guest home
+// Auth::routes(['register'=>false]); // disattivazione signup in guest home 
+/**
+ * ! http://localhost:8000/admin
+ */
 // Route::get('/admin', 'HomeController@index')->name('admin-home')->middleware('auth');
 // oppure raggruppamento sotto prefisso URI 'admin'
 Route::prefix('admin')   	// prefisso URI raggruppamento sezione /admin/...
-	->namespace('Admin')	// ubicazione Controller admin /app/Http/Controllers/Admin/
+	->namespace('Admin')	// ubicazione dei Controller admin /app/Http/Controllers/Admin/
 	->middleware('auth')	// controllore autenticazione
 	->group(function () {	// rotte specifiche admin
+		/**
+		 * Home Page utente loggato
+		 */
 		Route::get('/', 'HomeController@index')->name('admin-home');
-
-		// le robe del token
-		Route::get('/profile', 'HomeController@profile')->name('admin-profile');
-		Route::post('/profile/generate-token', 'HomeController@generateToken')->name('admin.generate_token');
-
+		/**
+		 * Post CRUD
+		 */
 		Route::resource('/posts', PostController::class)->names([
 			'index' 	=> 'admin.posts.index',
 			'show' 		=> 'admin.posts.show',
@@ -81,6 +81,9 @@ Route::prefix('admin')   	// prefisso URI raggruppamento sezione /admin/...
 			'update' 	=> 'admin.posts.update',
 			'destroy' 	=> 'admin.posts.destroy',
 		]);
+		/**
+		 * Category CRUD
+		 */
 		Route::resource('/categories', CategoryController::class)->names([
 			'index' 	=> 'admin.categories.index',
 			'show' 		=> 'admin.categories.show',
@@ -90,6 +93,9 @@ Route::prefix('admin')   	// prefisso URI raggruppamento sezione /admin/...
 			'update' 	=> 'admin.categories.update',
 			'destroy' 	=> 'admin.categories.destroy',
 		]);
+		/**
+		 * Tag CRUD
+		 */
 		Route::resource('/tags', TagController::class)->names([
 			'index' 	=> 'admin.tags.index',
 			'show' 		=> 'admin.tags.show',
@@ -99,5 +105,12 @@ Route::prefix('admin')   	// prefisso URI raggruppamento sezione /admin/...
 			'update' 	=> 'admin.tags.update',
 			'destroy' 	=> 'admin.tags.destroy',
 		]);
+		/**
+		 * API con token
+		 * pannello generazione token utente loggato
+		 * generazione token 
+		 */
+		Route::get('/profile', 'HomeController@profile')->name('admin-profile');
+		Route::post('/profile/generate-token', 'HomeController@generateToken')->name('admin.generate_token');
 	});
 

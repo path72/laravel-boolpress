@@ -17,18 +17,13 @@ use Illuminate\Support\Facades\Route;
 
 /**
  * ! http://localhost:8000/api/user/
- * 
- * endpoint contattabile in get
  */
-
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 /**
  * ! http://localhost:8000/api/posts/
- * 
- * endpoint contattabile in get
  */
 // Route::get('posts', 'Api\PostController@index'); // api senza protezione
 Route::get('posts', 'Api\PostController@index')->middleware('api_token_check');

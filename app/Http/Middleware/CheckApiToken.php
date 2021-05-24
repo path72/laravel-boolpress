@@ -16,7 +16,7 @@ class CheckApiToken
      */
     public function handle($request, Closure $next)
     {
-		// cose da fare prima di arrivare su Api\PostController@index()
+		// ! cose da fare prima di arrivare su Api\PostController@index()
 		
 		// prelevo token della richiesta
 		$req_token = $request->header('Authorization');

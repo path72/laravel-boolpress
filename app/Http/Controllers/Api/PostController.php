@@ -8,6 +8,12 @@ use App\Post;
 
 class PostController extends Controller
 {
+	/**
+	 * Post endpoint 
+	 * 
+	 * restituisce in json tutta la tabella posts
+	 * 
+	 */
     public function index() 
 	{
 		$posts = Post::all();
