@@ -37464,3 +37464,41 @@ module.exports = __webpack_require__(/*! C:\Users\salvo\Documents\_docs\02_CODIN
 /***/ })
 
 /******/ });
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+var app = new Vue(
+	{
+		el: '#app',
+		data: {
+			'access_token' : '79ifESOHoiuGyMDLugGZEAm2E39w5kLMxkpjpWPa9euBkh9UrBQshB8a9uYnKjSMIVmnHaR1XCIsKfey'
+		},
+		methods: {
+		},
+		computed: {
+		},
+		created() {
+			// alert('cicio no xe per barca');
+		},
+		mounted() {
+			console.log('token:', this.access_token);
+
+			axios.get('http://localhost:8000/api/posts', {
+				headers: {
+					'Authorization': `Bearer ${this.access_token}`
+				}
+			})
+			.then((res) => {
+				console.log(res);
+				console.log(res.data);
+			})
+			.catch((error) => {
+				console.error(error);
+			})
+		},
+		updated() {
+		}
+	}
+);
+// Vue.config.devtools = true;
+////////////////////////////////////////////////////////////////////////////////////////
