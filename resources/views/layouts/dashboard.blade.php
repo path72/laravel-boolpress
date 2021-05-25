@@ -24,6 +24,7 @@
 	<!-- *** [ AXIOS (after Vue.js) ] *** -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
 
+	<title>@yield('title')</title>
 </head>
 <body>
 	<div id="app">

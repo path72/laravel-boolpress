@@ -1,6 +1,7 @@
 {{-- @extends('layouts.app') --}}
 @extends('layouts.dashboard')
 
+@section('title', 'admin-home')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

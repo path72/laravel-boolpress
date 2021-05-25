@@ -37471,7 +37471,8 @@ var app = new Vue(
 	{
 		el: '#app',
 		data: {
-			'access_token' : '79ifESOHoiuGyMDLugGZEAm2E39w5kLMxkpjpWPa9euBkh9UrBQshB8a9uYnKjSMIVmnHaR1XCIsKfey'
+			'access_token' : '79ifESOHoiuGyMDLugGZEAm2E39w5kLMxkpjpWPa9euBkh9UrBQshB8a9uYnKjSMIVmnHaR1XCIsKfey',
+			'posts' : []
 		},
 		methods: {
 		},
@@ -37485,12 +37486,17 @@ var app = new Vue(
 
 			axios.get('http://localhost:8000/api/posts', {
 				headers: {
-					'Authorization': `Bearer ${this.access_token}`
+					// 'Authorization': `Bearer ${api_token}`
+					'Authorization': 'Bearer '+this.access_token
 				}
 			})
 			.then((res) => {
 				console.log(res);
 				console.log(res.data);
+
+				this.posts = res.data.results;
+				
+				console.log('this.posts',this.posts);
 			})
 			.catch((error) => {
 				console.error(error);
