@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 use App\Post;
 use App\Tag;
 use App\Category;
+use Illuminate\Support\Facades\Storage;
+
 
 class PostController extends Controller
 {
@@ -59,6 +61,8 @@ class PostController extends Controller
     {
 		// $request è il contenuto del form (post+tag)
 		// @dd($request);
+		// @dd($request->all()['image']);
+		$form_data = $request->all();
 
 		// validazione parte post
 		$this->postValidation($request);
@@ -72,10 +76,20 @@ class PostController extends Controller
 		// id user che crea il post
 		$new_post['user_id'] = Auth::id();
 
+		// getrione immagine
+		if(array_key_exists('image',$form_data)) {
+			// slvo immagien e recupero path
+			$image_path = Storage::put('post_images',$form_data['image']);
+			// @dump($image_path);
+			$form_data['image'] = $image_path; 
+		}
+		$new_post->image = $form_data['image'];
+		// @dd($new_post->image);
+
 		// ! aggiungo $new_post nella table posts; NON sono qui i tag !
 		// il nuovo post acquisisce i dati del form e viene buttato nel DB
-		$data = $request->all();
-		$new_post->fill($data);
+		// $data = $request->all();
+		$new_post->fill($form_data);
 		$new_post->save(); // ! DB writing here !
 
 		// ! NON ho aggiunto i tag che non stanno nella table posts, ma nella pivot!

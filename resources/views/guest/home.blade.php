@@ -96,7 +96,8 @@
 						<a href="{{route('categories.index')}}">Categories</a>
 						<a href="{{route('tags.index')}}">Tags</a>
 					@endauth
-                </div>
+                    <a href="{{route('contact')}}">Contact<a>
+				</div>
             </div>
         </div>
     </body>

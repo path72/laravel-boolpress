@@ -52,6 +52,10 @@ Route::prefix('users')
 		Route::get('/{id}', 'UserController@show')->name('users.show');		
 	});
 
+// # CONTACT FORM # 
+Route::get('/contact','HomeController@contact')->name('contact');
+Route::post('/contact','HomeController@contactSent')->name('contact.sent');
+
 // % ADMIN ROUTES % 
 
 Auth::routes(); // signup presente in guest home
