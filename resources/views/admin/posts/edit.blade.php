@@ -41,14 +41,15 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+				<div class="form-group">
 				@if($post->image)
-					<p>Immagine</p>
-					<img src="{{asset('storage/'.$post->image)}}" alt="">
+					<p>Immagine:</p>
+					<img style="max-width:600px;" src="{{asset('storage/'.$post->image)}}" alt="">
+					<p>Sostituisci immagine</p>
 				@else 
 					<p>Immagine non presente</p>
+                    <p>Inserisci mmagine</p>
 				@endif
-				<div class="form-group">
-                    <label>Immagine</label>
                     <input type="file" name="image" class="form-control-file @error('image') is-invalid @enderror" value="{{ old('image', $post->image) }}">
                     @error('image')
                         <div class="invalid-feedback">{{ $message }}</div>

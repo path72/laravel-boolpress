@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Post;
 use App\Tag;
 use App\Category;
-use Illuminate\Support\Facades\Storage;
 
 
 class PostController extends Controller
@@ -60,9 +60,9 @@ class PostController extends Controller
     public function store(Request $request)
     {
 		// $request è il contenuto del form (post+tag)
-		// @dd($request);
-		// @dd($request->all()['image']);
 		$form_data = $request->all();
+		// @dd($form_data);
+		// @dd($form_data['image']);
 
 		// validazione parte post
 		$this->postValidation($request);
@@ -76,19 +76,18 @@ class PostController extends Controller
 		// id user che crea il post
 		$new_post['user_id'] = Auth::id();
 
-		// getrione immagine
+		// gestione immagine
 		if(array_key_exists('image',$form_data)) {
-			// slvo immagien e recupero path
+			// salvo immagine in /storage/app/public/post_images/ e recupero path
+			// ! qui viene definita la cartella /post_images/ dentro /public/ !
 			$image_path = Storage::put('post_images',$form_data['image']);
 			// @dump($image_path);
+			// modifico il default path del form
 			$form_data['image'] = $image_path; 
 		}
-		$new_post->image = $form_data['image'];
-		// @dd($new_post->image);
 
 		// ! aggiungo $new_post nella table posts; NON sono qui i tag !
 		// il nuovo post acquisisce i dati del form e viene buttato nel DB
-		// $data = $request->all();
 		$new_post->fill($form_data);
 		$new_post->save(); // ! DB writing here !
 
@@ -109,7 +108,6 @@ class PostController extends Controller
 		}
 
 		// alla fine torno all'index 
-		@dump('');
 		return redirect()->route('admin.posts.index')->with('status','Post creato correttamente');		
     }
 
@@ -173,7 +171,8 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         // $request è il contenuto del form (post con category + tag array)
-		// @dd($request);
+		$form_data = $request->all();
+		// @dd($form_data);
 
 		// $post è il post passato dall'edit(), quello presente in DB da modificare
 		// @dd($post);
@@ -192,10 +191,21 @@ class PostController extends Controller
 		// ? gestire updated_at ?
 		//
 
+		// gestione immagine
+		// @dump($form_data['image']);
+		// @dd($post['image']);
+		if(array_key_exists('image',$form_data)) {
+			// salvo immagine in /storage/app/public/post_images/ e recupero path
+			// ! qui viene definita la cartella /post_images/ dentro /public/ !
+			$image_path = Storage::put('post_images',$form_data['image']);
+			// @dump($image_path);
+			// modifico il default path del form 
+			$form_data['image'] = $image_path;
+		}
+
 		// ! aggiornamento $post nella table posts; NON sono qui i tags !
 		// il post specifico acquisisce i dati del form (inclusa category) e aggiorna quelli già presenti nel DB
-		$data = $request->all();
-		$post->update($data); // ! DB writing here !
+		$post->update($form_data); // ! DB writing here !
 
 		// ! NON ho aggiornato i tag che non stanno nella table posts, ma nella pivot!
 		// se l'array dei tag selezionati non è vuoto
@@ -211,7 +221,6 @@ class PostController extends Controller
 		}
 
 		// alla fine torno all'index 
-		@dump('');
 		return redirect()->route('admin.posts.index')->with('status','Post aggiornato correttamente');		
     }
 
